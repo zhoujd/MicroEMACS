@@ -1,0 +1,6 @@
+*.o
+.deps
+config.h
+me
+stamp-h1
+emacs
