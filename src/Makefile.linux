@@ -1,4 +1,8 @@
-CFLAGS=		-O2 -g -Dlinux -Wno-implicit-function-declaration -Wno-implicit-int -DSYS_PATH=
+### Makefile
+
+TARGET=		me
+
+CFLAGS=		-O2 -g -Dlinux -DSYS_PATH="" -Wno-implicit-function-declaration -Wno-implicit-int -static
 
 OFILES=		ansi.o basic.o bind.o buffer.o display.o file.o \
 		fileio.o hp150.o line.o lock.o main.o random.o region.o \
@@ -10,15 +14,12 @@ CFILES=		ansi.c basic.c bind.c buffer.c display.c  file.c \
 
 HFILES=		estruct.h edef.h efunc.h epath.h
 
-all:		emacs
+all:		$(TARGET)
 
-emacs:		$(OFILES)
-		$(CC) $(CFLAGS) $(OFILES) -lc -o emacs
+$(TARGET):	$(OFILES)
+		$(CC) $(CFLAGS) $(OFILES) -lc -o $(TARGET)
 
 clean:
-		$(RM) $(OFILES)
-
-distclean:	clean
-		$(RM) emacs *~
+		$(RM) $(OFILES) $(TARGET)
 
 $(OFILES):	$(HFILES)
