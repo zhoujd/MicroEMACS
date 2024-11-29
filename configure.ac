@@ -1,11 +1,11 @@
-AC_INIT([MicroEMACS],[3.6.1-beta1],[],[me],[https://github.com/troglobit/MicroEMACS/])
-AC_CONFIG_AUX_DIR(linux)
+AC_INIT([MicroEMACS],[3.6.1-beta1],[],[me],[https://github.com/zhoujd/MicroEMACS/])
+AC_CONFIG_AUX_DIR(build-aux)
 AM_INIT_AUTOMAKE([1.11 foreign])
 AM_SILENT_RULES([yes])
 
 AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_HEADERS([src/config.h])
-AC_CONFIG_FILES([Makefile doc/Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile])
 
 AC_PROG_CC
 AC_PROG_INSTALL

@@ -1,4 +1,4 @@
-SUBDIRS           = doc src
+SUBDIRS           = src
 dist_doc_DATA     = README.md UNLICENSE ChangeLog
 dist_pkgdata_DATA = emacs.rc
 
