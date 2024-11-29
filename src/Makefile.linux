@@ -23,3 +23,5 @@ clean:
 		$(RM) $(OFILES) $(TARGET)
 
 $(OFILES):	$(HFILES)
+
+.PHONY:		all clean install uninstall
