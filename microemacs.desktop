@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=MicroEmacs
+Comment=Emacs Text Editor
+Exec= %F
+Icon=/usr/local/share/icons/me.png
+Exec=/usr/local/bin/me -c
+Terminal=false
+Type=Application
+Categories=Application;Accessories;
