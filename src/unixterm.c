@@ -2710,10 +2710,10 @@ TCAPgetattr(meTermio p, int isX)
 	 * Terminal special characters 
 	 */
 	p->c_cc[VINTR] = 'C' - '@';	/* C-c : CINTR */
-	p->c_cc[VQUIT] = CQUIT;	/* FS, cntl | */
+	p->c_cc[VQUIT] = VQUIT;	/* FS, cntl | */
 	p->c_cc[VERASE] = 'H' - '@';	/* Backspace or '#' 0x7f */
 	p->c_cc[VKILL] = 'K' - '@';	/* C-k */
-	p->c_cc[VEOF] = CEOF;	/* C-d */
+	p->c_cc[VEOF] = VEOF;	/* C-d */
 	p->c_cc[VEOL] = 'J' - '@';	/* C-j */
 	p->c_cc[VMIN] = 1;
 	p->c_cc[VTIME] = 0;
@@ -2721,13 +2721,13 @@ TCAPgetattr(meTermio p, int isX)
 #ifdef VWERASE
 	p->c_cc[VWERASE] = 'W' - '@';	/* C-w */
 #endif
-	p->c_cc[VLNEXT] = CLNEXT;	/* C-v */
+	p->c_cc[VLNEXT] = VLNEXT;	/* C-v */
 #ifdef VDSUSP
-	p->c_cc[VDSUSP] = CDSUSP;	/* C-y */
+	p->c_cc[VDSUSP] = VDSUSP;	/* C-y */
 #endif
-	p->c_cc[VSUSP] = CSUSP;	/* C-z */
-	p->c_cc[VSTART] = CSTART;	/* C-q */
-	p->c_cc[VSTOP] = CSTOP;	/* C-s */
+	p->c_cc[VSUSP] = VSUSP;	/* C-z */
+	p->c_cc[VSTART] = VSTART;	/* C-q */
+	p->c_cc[VSTOP] = VSTOP;	/* C-s */
 #endif
     } else if (isX != 0) {
 	/*
