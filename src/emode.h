@@ -74,7 +74,7 @@ meUByte         modeCode[] = {
 meMode          globMode = {
     meModeMask(MDEXACT) |
 #ifndef _NANOEMACS
-	meModeMask(MDAUTOSV) | meModeMask(MDBACKUP) |
+	meModeMask(MDAUTOSV) |
 #endif
 	meModeMask(MDCR) |
 #ifdef _WIN32

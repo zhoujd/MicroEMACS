@@ -66,7 +66,7 @@ static char     meHelpPage[] =
     "  -B      : Enable back-up file creation\n"
 #else
     "  -a      : Disable auto-saving\n"
-    "  -B      : Disable back-up file creation\n"
+    "  -B      : Enable back-up file creation\n"
 #endif
     "  -b      : Load next file as a binary file\n"
 #if MEOPT_EXTENDED
