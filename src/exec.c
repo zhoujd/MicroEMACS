@@ -1648,8 +1648,7 @@ execFile(meUByte * fname, int f, int n)
 	    meABORT)) {
 	if (status)
 	    return meABORT;
-	return mlwrite(MWABORT | MWCLEXEC,
-		       (meUByte *) "[Failed to load file %s]", fname);
+	return meFALSE;
     }
     /*
      * go execute it! 
