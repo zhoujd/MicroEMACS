@@ -1,5 +1,7 @@
 ### .gitignore
 
 *.ob
+*.oc
 me
+mec
 mecw
