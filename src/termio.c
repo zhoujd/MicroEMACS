@@ -111,8 +111,8 @@ TTdoBell(int n)
 #endif
     if ((n == 0) || ((n == 1) && quietMode)) {
 	meUByte         scheme = (globScheme / meSCHEME_STYLES);
-	pokeScreen(POKE_NOMARK + 0x10, frameCur->depth,
-		   frameCur->width - 6, &scheme, (meUByte *) "[BELL]");
+	//pokeScreen(POKE_NOMARK + 0x10, frameCur->depth,
+	//	   frameCur->width - 6, &scheme, (meUByte *) "[BELL]");
 	frameCur->video.lineArray[frameCur->depth].endp = frameCur->width;
 	resetCursor();
 	frameCur->mlStatus |= MLSTATUS_CLEAR;
