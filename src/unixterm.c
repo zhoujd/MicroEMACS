@@ -481,7 +481,7 @@ meSetupPathsAndUser(char *progname)
 	 */
 	if (homedir != NULL) {
 	    meStrcpy(buff, homedir);
-	    meStrcat(buff, ".config/me");
+	    meStrcat(buff, ".jasspa");
 	    if (((ll =
 		  mePathAddSearchPath(ll, evalResult, buff,
 				      &gotUserPath)) > 0) && !gotUserPath)
