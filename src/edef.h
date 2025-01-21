@@ -480,8 +480,7 @@ meInt           styleTableSize = 2;	/* Size of the style table */
 meSchemeSet    *hilBlock;	/* Hilighting style change */
 meInt           cursorState = 0;	/* Current state of cursor */
 meUByte        *meProgName = NULL;	/* the program name (argv[0]) */
-meUByte         orgModeLineStr[] =
-    "%s%r%u " ME_SHORTNAME " (%e) - %l of %n %b (%f) ";
+meUByte         orgModeLineStr[] = "%s%r%u%k %b %l of %n - (%e) - (%f) ";
 meUByte        *modeLineStr = orgModeLineStr;	/* current modeline format 
 						 */
 meInt           autoTime = 300;	/* auto save time in seconds */
