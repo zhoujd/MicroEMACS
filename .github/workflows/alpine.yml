@@ -18,4 +18,4 @@ jobs:
     - name: Install dependence
       run: apk add make gcc musl-dev ncurses-dev ncurses-static libbsd-static libbsd-dev
     - name: Build MicroEMACS
-      run: make -f src/linux-static.gmk
+      run: make -C src -f linux-static.gmk
