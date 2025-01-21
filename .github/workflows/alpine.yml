@@ -1,0 +1,21 @@
+name: Alpine CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/linuxcontainers/alpine:3.20
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install dependence
+      run: apk add make gcc musl-dev ncurses-dev ncurses-static libbsd-static libbsd-dev
+    - name: Build MicroEMACS
+      run: make -f src/linux-static.gmk
