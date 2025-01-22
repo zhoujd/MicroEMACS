@@ -402,13 +402,16 @@ meWindowFixTextSize(meWindow * wp)
      * vertical scroll bar if the current scroll-mode is non-scrolling and 
      * the window is on the right edge of the screen 
      */
+#if MEOPT_VBAR
     if (gsbarmode & WMVBAR)
 	wp->vertScrollBarMode = gsbarmode;
     else if ((wp->frameColumn + wp->width) < frameCur->width)
 	wp->vertScrollBarMode = WMVBAR;
     else
 	wp->vertScrollBarMode = 0;
-
+#else
+    wp->vertScrollBarMode = 0;
+#endif
     if (wp->vertScrollBarMode & WMVBAR)
 	wp->textWidth =
 	    wp->width - ((wp->vertScrollBarMode & WMVWIDE) ? 2 : 1);

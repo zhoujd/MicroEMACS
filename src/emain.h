@@ -429,6 +429,7 @@
 #define MEOPT_CALLBACK  1	/* enable macro callbacks */
 #define MEOPT_SPAWN     1	/* enable spawning */
 #define MEOPT_SCROLL    1	/* enable scroll bars */
+#define MEOPT_VBAR      0	/* enable vertical scroll bars */
 #define MEOPT_HSPLIT    1	/* enable vertical window */
 #define MEOPT_FRAME     1	/* enable multiple frames */
 #if MEOPT_FRAME && (defined _MULTI_WINDOW)
@@ -512,6 +513,7 @@
 #define MEOPT_CALLBACK  0	/* enable macro callbacks */
 #define MEOPT_SPAWN     0	/* enable spawning */
 #define MEOPT_SCROLL    0	/* enable scroll bars */
+#define MEOPT_VBAR      0	/* enable vertical scroll bars */
 #define MEOPT_HSPLIT    0	/* enable vertical window */
 #define MEOPT_FRAME     0	/* enable multiple frames */
 #if MEOPT_FRAME && (defined _MULTI_WINDOW)
