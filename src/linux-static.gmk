@@ -143,28 +143,22 @@ install:
 	@echo "install done"
 
 clean:
-	$(RM) core me mec mew mecw ne nec new necw med medc medw medcw ned nedc nedw nedcw
+	$(RM) core me
 	$(RM) *.oc *.ow *.ob *.on *.ov *.oe
 	$(RM) *.odc *.odw *.odb *.odn *.odv *.ode
 
 spotless: clean
 	$(RM) tags *~
 
-mec:	$(OBJ_C)
+me:	$(OBJ_C)
 	$(RM) $@
 	$(LD) $(LDFLAGS) $(LDOPTIMISE) -o $@ $(OBJ_C) $(CONSOLE_LIBS) $(LIBS)
 	$(STRIP) $@
 
-me:	mec
-	$(CP) mec $@
-
 # Debug Builds
-medc:	$(OBJ_DC)
+med:	$(OBJ_DC)
 	$(RM) $@
 	$(LD) $(LDFLAGS) $(LDDEBUG) -o $@ $(OBJ_DC) $(CONSOLE_LIBS) $(LIBS)
-
-med:	medc
-	$(CP) medcw $@
 
 #
 # Dependancies
