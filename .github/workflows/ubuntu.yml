@@ -9,9 +9,15 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
 
     steps:
     - uses: actions/checkout@v4
+      - name: Install prepare
+      run: apt-get update
+    - name: Install build tools
+      run: apt-get install -y gcc make
     - name: build ME
       run: make -C src/
