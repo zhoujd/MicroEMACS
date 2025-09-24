@@ -3754,7 +3754,8 @@ XTERMstart(void)
      * action. 
      */
 #ifdef _USG
-    TCAPgetattr(&otermio, 1);
+    //TCAPgetattr(&otermio, 1);
+    tcgetattr(&otermio, 1);
 #endif
 
     /*
