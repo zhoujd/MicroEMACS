@@ -1,0 +1,156 @@
+> -!- document; fill-column:65; fill-mode:both; -!-
+>
+>  Copyright (c) 2003-2009 Jon Green.
+>
+>  Created By    : Jon Green
+>  Created       : Sat Aug 9 23:47:20 2003
+>  Last Modified : <090829.1804>
+>
+
+The  following are benchmark  figures for  MicroEmacs  running on
+different machines with different compilers.
+
+Running % me "@benchmrk" results.txt
+
+1.0  SunBlade 100 (SPARC IIi 500MHz) - 2002-12 - Forte 8.0 Compiler (-xO3)
+
+    @       Get(sec) Set(sec)
+    Test1:     95      103
+    Test2:    224      223
+    Test3:    220      238
+    Test4:    224      234
+    Test5:    251      275
+    Test6:    241      236
+    Test7:    235      308
+    Test8:    209      226
+    Test9:    188      227
+
+1.1  SunBlade 100 (SPARC IIi 500MHz) - 2003-06 - Forte 8.0 Compiler (-xO3)
+
+    @      Get(sec) Set(sec)
+    Test1:     78       77
+    Test2:    103      118
+    Test3:    112      127
+    Test4:    119      129
+    Test5:    132      140
+    Test6:    114      141
+    Test7:    130      141
+    Test8:     87      104
+    Test9:     87      104
+
+1.2 SunBlade 100 (SPARC IIi 500MHz) - 2003-06 - Forte 7.0 Compiler (-xO3)
+
+    @      Get(sec) Set(sec)
+    Test1:     78       83
+    Test2:    117      125
+    Test3:    128      145
+    Test4:    129      131
+    Test5:    130      139
+    Test6:    133      134
+    Test7:    132      150
+    Test8:     94      106
+    Test9:     93      112
+
+1.3 SunBlade 100 (SPARC IIi 500MHz) - 2003-06 - GCC 3.2.2 Compiler (-O3)
+
+    @      Get(sec) Set(sec)
+    Test1:     99       97
+    Test2:    124      136
+    Test3:    142      154
+    Test4:    130      148
+    Test5:    140      163
+    Test6:    140      157
+    Test7:    147      164
+    Test8:    110      121
+    Test9:    108      127
+
+1.4  SunBlade 100 (SPARC IIi 500MHz) - 2004-01 - Forte 8.0 Compiler (-xO3)
+
+    @       Get(sec) Set(sec)
+    Test1:     63       62
+    Test2:     94      113
+    Test3:    100      123
+    Test4:     93      115
+    Test5:    106      121
+    Test6:    100      117
+    Test7:    106      128
+    Test8:     67       92
+    Test9:     69       91
+
+1.5 SunBlade 2500 (SPARC IIIi 1.6GHz) - Solaris 10 - 2005-05-05 - Forte 10.0 Compiler (-x03)
+
+    @      Get(sec) Set(sec)
+    Test1:     19       18
+    Test2:     26       30
+    Test3:     26       30
+    Test4:     27       31
+    Test5:     27       31
+    Test6:     28       32
+    Test7:     28       32
+    Test8:     21       26
+    Test9:     21       25
+
+1.5.1 SunBlade 2500 (SPARC IIIi 1.6GHz) - Solaris 10 - 2006-09-09 - SunStudio 11.0 Compiler (-x03)
+
+    @      Get(sec) Set(sec)
+    Test1:     19       19
+    Test2:     25       30
+    Test3:     25       30
+    Test4:     27       32
+    Test5:     27       32
+    Test6:     28       32
+    Test7:     27       32
+    Test8:     20       25
+    Test9:     20       26
+
+1.6 SunBlade 2500 (SPARC IIIi 1.6GHz) - Solaris 10 - 2005-05-05 - GCC 2.95.3 (-O2)
+
+    @      Get(sec) Set(sec)
+    Test1:     23       22
+    Test2:     31       32
+    Test3:     30       32
+    Test4:     31       36
+    Test5:     30       35
+    Test6:     31       36
+    Test7:     30       36
+    Test8:     24       28
+    Test9:     25       28
+
+1.7 Sun Solaris 10 - Pentium 4 (Intel 3.0GHz) - 2005-05-05 - GCC 3.4.3 (-O2)
+
+    @      Get(sec) Set(sec)
+    Test1:     10       10
+    Test2:     22       24
+    Test3:     30       32
+    Test4:     22       24
+    Test5:     30       31
+    Test6:     23       25
+    Test7:     31       32
+    Test8:     11       13
+    Test9:     11       13
+
+1.7 Sun  Solaris  10 - Pentium 4 (Intel 3.0GHz) - 2005-05-05 - Forte 10.0
+
+    @      Get(sec) Set(sec)
+    Test1:     10       10
+    Test2:     22       24
+    Test3:     30       31
+    Test4:     23       24
+    Test5:     30       32
+    Test6:     23       24
+    Test7:     32       32
+    Test8:     11       13
+    Test9:     11       13
+
+1.8 Fedora Core 5 Athlon64 3200 (at 2Ghz) gcc 4.1.1 - 2006-11-06
+
+    @      Get(sec) Set(sec)
+    Test1:      9        9
+    Test2:     15       16
+    Test3:     15       17
+    Test4:     15       16
+    Test5:     16       17
+    Test6:     15       16
+    Test7:     17       18
+    Test8:     10       11
+    Test9:     10       12

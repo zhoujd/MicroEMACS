@@ -1,0 +1,126 @@
+/* -*- c -*-
+ *
+ * JASSPA MicroEmacs - www.jasspa.com
+ * etermcap.def - UNIX Termcap definitions.
+ *
+ * Copyright (C) 2000-2023 JASSPA (www.jasspa.com)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+/*
+ * Created:     Mon Mar 6 2000
+ * Synopsis:    UNIX Termcap definitions.
+ * Authors:     Jon Green
+ * Description:
+ *     Included by unixterm.c to define all of the TERMCAP codes that we
+ *     use in the system in the following table. We retreive the codes
+ *     during initialisation. This table enables us to read them all in. 
+ */
+
+/* auto_left_margin/am/am/Terminal has automatic margins */
+TCAP_BOOLN(TCAPam, "am", "am")
+
+/* eat_newline_glitch/xenl/xn/Newline ignored after 80 columns (Concept) */
+TCAP_BOOLN(TCAPxenl,"xenl", "xn")
+
+/* columns/cols/co/Number of columns in a line */
+TCAP_DIGIT(TCAPcols, "cols", "co")
+
+/* lines/lines/li/Number of lines on a screen or a page */
+TCAP_DIGIT(TCAPlines, "lines", "li")
+
+/* clear_screen/clear/cl/Clear screen and home cursor */
+TCAP_STRING(TCAPclear, "clear", "cl")
+
+/* cursor_address/cup/cm/Move to row #1 col #2 */
+TCAP_STRING(TCAPcup, "cup", "cm")
+
+/* exit_keyboard_transmit_mode/rmkx/ke/End keypad transmit mode */
+TCAP_STRING(TCAPrmkx, "rmkx", "ke")
+
+/* enter_keyboard_transmit_mode/smkx/ks/Enter keypad transmit mode */
+TCAP_STRING(TCAPsmkx, "smkx", "ks")
+
+/* cursor_invisible/civis/vi/Make cursor invisible */
+TCAP_STRING(TCAPcivis, "civis", "vi")
+
+/* cursor_normal/cnorm/ve/Make cursor appear normal (undo vs/vi) */
+TCAP_STRING(TCAPcnorm, "cnorm", "ve")
+
+/* exit_attribute_mode/srg0/me/Turn off all attributes */
+TCAP_STRING(TCAPsgr0, "sgr0", "me")
+
+#ifdef _TCAPFONT
+/* enter_bold_mode/bold/md/Turn on bold (extra bright) mode */
+TCAP_STRING(TCAPbold, "bold", "md")
+
+/* enter_italics_mode/sitm/ZH/Enable italics */
+TCAP_STRING(TCAPsitm, "sitm", "ZH")
+
+/* exit_italics_mode/ritm/ZR/Disable italics */
+TCAP_STRING(TCAPritm, "ritm", "ZR")
+
+/* enter_dim_mode/dim/mh/Turn on half-bright mode */
+TCAP_STRING(TCAPdim, "dim", "mh")
+
+/* enter_reverse_mode/rev/mr/Turn on reverse video mode */
+TCAP_STRING(TCAPrev, "rev", "mr")
+
+/* enter_underline_mode/smul/us/Start underscore mode */
+TCAP_STRING(TCAPsmul, "smul", "us")
+
+/* exit_underline_mode/rmul/ue/End underscore mode */
+TCAP_STRING(TCAPrmul, "rmul", "ue")
+#endif
+
+#if MEOPT_COLOR
+/* max_colors/colors/Co/Get the maximum number of colors */
+TCAP_DIGIT(TCAPcolors, "colors", "Co")
+
+/* set_a_background/setab/AB/Set background color using ANSI escape */
+TCAP_STRING(TCAPsetab, "setab", "AB")
+
+/* set_a_foreground/setaf/AF/Set foreground color using ANSI escape */
+TCAP_STRING(TCAPsetaf, "setaf", "AF")
+
+/* orig_pair/op/op/Set default color-pair to the original one */
+TCAP_STRING(TCAPop, "op", "op")
+
+/* orig_colors/oc/oc/Set all color(-pair)s to the original ones */
+TCAP_STRING(TCAPoc, "oc", "oc")
+#endif
+
+/* exit_am_mode/rmam/RA/Turn off automatic margins */
+TCAP_STRING(TCAPrmam, "rmam", "RA")
+
+/* enter_am_mode/smam/SA/Turn on automatic margins */
+TCAP_STRING(TCAPsmam, "smam", "SA")
+
+#ifdef _USE_NCURSES
+/* The following are not supported by termcap */
+
+/* Enable/Disable bracket paste - NOTE: these are coupled with SKEY_bps & SKEY_bpe */
+TCAP_STRING(TCAPbpe, "BE", NULL)
+TCAP_STRING(TCAPbpd, "BD", NULL)
+
+#if MEOPT_MOUSE
+/* Enable/Disable mouse events - NOTE: This works with kmous eskeys, */
+TCAP_STRING(TCAPxm, "XM", NULL)
+#endif
+#endif
+
+/* Enable/Disable alternate screen buffer - NOTE: these must be last 2 */
+TCAP_STRING(TCAPasbe, "smcup", "ti")
+TCAP_STRING(TCAPasbd, "rmcup", "te")
