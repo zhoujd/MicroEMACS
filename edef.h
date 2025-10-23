@@ -85,7 +85,7 @@ typedef enum UKIND
 } UKIND;
 
 #define	ALLWIND(wp)	for (wp=wheadp;wp;wp=wp->w_wndp)
-#define wloffset(lp, n)  (uoffset((lp)->l_text,(n)))
+#define wloffset(lp, n)  (uoffset((const uchar *)((lp)->l_text),(n)))
 
 int checkreadonly (void);
 
