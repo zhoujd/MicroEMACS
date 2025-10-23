@@ -45,7 +45,7 @@ extern void update();
 extern int forwchar (int f, int n);
 extern int backchar (int f, int n);
 extern int setmark(int f, int n);
-extern int linsert (int n, int c);
+extern int linsert (int n, int c, char *s);
 extern int lnewline ();
 extern int ldelete (int n, int kflag);
 extern int ttgetc();
@@ -560,7 +560,7 @@ int qreplace (int f, int n)
       for (i = 0; i < rlength; i++)
 	{
 	  tmpc = rpat[i];
-	  s = (tmpc == '\n' ? lnewline () : linsert (1, tmpc));
+	  s = (tmpc == '\n' ? lnewline () : linsert (1, tmpc, NULLPTR));
 	  if (s != TRUE)
 	    {
 	      /* error while inserting */

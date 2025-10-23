@@ -86,6 +86,7 @@ typedef enum UKIND
 
 #define	ALLWIND(wp)	for (wp=wheadp;wp;wp=wp->w_wndp)
 #define wloffset(lp, n)  (uoffset((const uchar *)((lp)->l_text),(n)))
+#define NULLPTR	((char *) 0)		/* Portable null pointer	*/
 
 int checkreadonly (void);
 

@@ -9,7 +9,7 @@
 extern void mlwrite ();
 extern void lchange (int flag);
 extern int lnewline ();
-extern int linsert (int n, int c);
+extern int linsert (int n, int c, char *s);
 extern int backchar (int f, int n);
 extern void kdelete ();
 extern int ldelete (int f, int n);
@@ -144,7 +144,7 @@ int quote (int f, int n)
       while (s == TRUE && --n);
       return (s);
     }
-  return (linsert (n, c));
+  return (linsert (n, c, NULLPTR));
 }
 
 /*
@@ -155,7 +155,7 @@ int tab (int f, int n)
 {
   if (n < 0)
     return (FALSE);
-  return (linsert (n, 9));
+  return (linsert (n, 9, NULLPTR));
 }
 
 /*
@@ -289,7 +289,7 @@ int yank (int f, int n)
 	    }
 	  else
 	    {
-	      if (linsert (1, c) == FALSE)
+	      if (linsert (1, c, NULLPTR) == FALSE)
 		return (FALSE);
 	    }
 	  ++i;

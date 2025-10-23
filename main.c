@@ -26,7 +26,7 @@ extern void mlwrite ();
 extern int mlyesno (char *prompt);
 extern void makename (char bname[], char fname[]);
 extern int readin (char fname[]);
-extern int linsert (int f, int n);
+extern int linsert (int f, int n, char *s);
 extern int anycb ();
 extern BUFFER *bfind ();
 extern int ttgetc();
@@ -214,7 +214,7 @@ int execute (int c, int f, int n)
 		}
 
       thisflag = 0;		/* For the future */
-      status = linsert (n, c);
+      status = linsert (n, c, NULLPTR);
       lastflag = thisflag;
       return (status);
     }
