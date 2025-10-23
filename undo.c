@@ -547,7 +547,7 @@ undostep (UNDO *up)
   if (up->l != NOLINE)
     {
       status = gotoline (TRUE, up->l + 1, KRANDOM);
-      if (up->o > wllength (curwp->w_dot.p))
+      if (up->o > llength (curwp->w_dot.p))
   eprintf ("Offset too large");
       else
   {
@@ -669,7 +669,7 @@ redostep (UNDO *up)
   if (up->l != NOLINE)
     {
       status = gotoline (TRUE, up->l + 1, KRANDOM);
-      if (up->o > wllength (curwp->w_dot.p))
+      if (up->o > llength (curwp->w_dot.p))
   eprintf ("Offset too large");
       else
   {

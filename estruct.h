@@ -48,7 +48,7 @@
 #define CTRL_S 19
 #define BACKSPACE 127
 
-#define NSRCH	  128	/* Undoable search commands.	 */
+#define NSRCH   128	/* Undoable search commands.	 */
 #define FFRAND		8	/* Called by other function	 */
 #define FFARG		7	/* any argument			 */
 
@@ -56,7 +56,7 @@
 #define ISLOWER(c)	(('a' <= c && 'z' >= c))
 #define ISUPPER(c)	(('A' <= c && 'Z' >= c))
 #define ISDIGIT(c)       (((c) >= '0') && ((c) <= '9'))
-#define ISCTRL(c)	     (c >= 0 && c <= 31)
+#define ISCTRL(c)      (c >= 0 && c <= 31)
 #define TOUPPER(c)	((c)-0x20)
 #define TOLOWER(c)	((c)+0x20)
 #define	CHARMASK(c)	((unsigned char) (c))
@@ -64,6 +64,24 @@
 
 #define CFCPCN	0x0001		/* Last command was C-P, C-N */
 #define CFKILL	0x0002		/* Last command was a kill */
+
+typedef struct POS
+{
+  struct LINE *p;
+  int o;
+} POS;
+
+
+/*
+ * A mark ring saves the 16 most recent locations of the mark;
+ * m_ring[0] is the current mark.
+ */
+#define RINGSIZE 16
+typedef struct MARKRING
+{
+  int m_count;			/* Number of marks pushed	*/
+  POS m_ring[RINGSIZE];		/* Stack of marks		*/
+} MARKRING;
 
 /*
  * There is a window structure allocated for every active display window. The
@@ -87,13 +105,14 @@ typedef struct WINDOW
   char w_ntrows;		/* # of rows of text in window */
   char w_force;			/* If NZ, forcing row */
   char w_flag;			/* Flags */
+  struct POS w_dot;		/* The "." (dot) position	*/
 } WINDOW;
 
-#define WFFORCE 0x01	       /* Window needs forced reframe */
-#define WFMOVE	0x02	       /* Movement from line to line */
-#define WFEDIT	0x04	       /* Editing within a line */
-#define WFHARD	0x08	       /* Better to a full display */
-#define WFMODE	0x10	       /* Update mode line */
+#define WFFORCE 0x01         /* Window needs forced reframe */
+#define WFMOVE	0x02         /* Movement from line to line */
+#define WFEDIT	0x04         /* Editing within a line */
+#define WFHARD	0x08         /* Better to a full display */
+#define WFMODE	0x10         /* Update mode line */
 
 /*
  * Text is kept in buffers. A buffer header, described below, exists for every
@@ -119,6 +138,7 @@ typedef struct BUFFER
   char b_flag;			/* Flags */
   char b_fname[NFILEN];		/* File name */
   char b_bname[NBUFN];		/* Buffer name */
+  struct UNDOSTACK *b_undo;	/* Pointer to undo stack	*/
 } BUFFER;
 
 #define BFTEMP	0x01		/* Internal temporary buffer */
