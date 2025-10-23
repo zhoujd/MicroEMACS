@@ -88,6 +88,7 @@ int main (int argc, char *argv[])
 	    }
 	  bp->b_dotp = bp->b_linep;
 	  bp->b_doto = 0;
+	  bp->b_undo = NULL;
 	  ffile = FALSE;
 	}
       else
@@ -177,6 +178,8 @@ int execute (int c, int f, int n)
 {
   KEYTAB *ktp;
   int status;
+
+  startsaveundo ();
 
   ktp = &keytab[0];	       /* Look in key table */
   while (ktp->k_fp != NULL)

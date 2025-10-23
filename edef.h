@@ -118,3 +118,4 @@ uclen (const uchar *s)
 }
 
 int saveundo (UKIND kind, POS *pos, ...); /* Save undo information.	*/
+void startsaveundo (void);		/* Start of undo sequence.	*/
