@@ -24,10 +24,10 @@ MANDIR=	${PREFIX}/man/man1
 HFILES=	estruct.h edef.h efunc.h ebind.h
 
 CFILES=	basic.c buffer.c display.c file.c fileio.c line.c main.c \
-	random.c region.c strlcpy.c search.c tcap.c termio.c window.c complete.c
+	random.c region.c strlcpy.c search.c tcap.c termio.c window.c complete.c undo.c
 
 OFILES=	basic.o buffer.o bufmenu.o display.o file.o fileio.o line.o main.o \
-	random.o region.o strlcpy.c search.o tcap.o termio.o window.o complete.o
+	random.o region.o strlcpy.c search.o tcap.o termio.o window.o complete.o undo.o
 
 all:	$(OFILES)
 	$(CC) $(CFLAGS) $(OFILES) -o $(EXEC) $(LFLAGS)
