@@ -1,7 +1,7 @@
 # The name to install the editor under.
 EXEC=pe
 
-CFLAGS=-Wall -O2
+CFLAGS=-Wall -O0 -g
 # To be /really/ fanatical on the executible's size...
 #CFLAGS=-Os -fomit-frame-pointer -malign-loops=0 -malign-jumps=0 -malign-functions=0 -Wall
 

@@ -46,4 +46,5 @@ extern WINDOW *curwp;
 
 int ldelete (int n, int kflag);		/* Delete n bytes at dot.	*/
 int insertwithnl (const char *s, int len);
-int linsert2 (int n, int c, char *s);	/* Insert char(s) at dot	*/
+void updatemode (void);
+int gotoline (int f, int n);

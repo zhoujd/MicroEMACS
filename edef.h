@@ -85,5 +85,35 @@ typedef enum UKIND
 } UKIND;
 
 #define	ALLWIND(wp)	for (wp=wheadp;wp;wp=wp->w_wndp)
+#define wloffset(lp, n)  (uoffset((lp)->l_text,(n)))
 
 int checkreadonly (void);
+
+/*
+ * Return the number of bytes in the UTF-8 character pointed to by s.
+ * Inlining this function speeds up all UTF-8 functions by quite a bit.
+ */
+static inline int
+uclen (const uchar *s)
+{
+  int n;
+  uchar c = *s;
+
+  if (c < 0x80)
+    n = 1;
+  else if (c >= 0xc0 && c <= 0xdf)
+    n = 2;
+  else if (c >= 0xe0 && c <= 0xef)
+    n = 3;
+  else if (c >= 0xf0 && c <= 0xf7)
+    n = 4;
+  else if (c >= 0xf8 && c <= 0xfb)
+    n = 5;
+  else if (c >= 0xfc && c <= 0xfd)
+    n = 6;
+  else
+    n = 1;	/* error */
+  return n;
+}
+
+int saveundo (UKIND kind, POS *pos, ...); /* Save undo information.	*/

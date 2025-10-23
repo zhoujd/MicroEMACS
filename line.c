@@ -376,6 +376,119 @@ void kdelete ()
 }
 
 /*
+ * Convert a Unicode character c to UTF-8, writing the
+ * characters to s; s must be at least 6 bytes long.
+ * Return the number of bytes in the UTF-8 string.
+ */
+int
+uputc (wchar_t c, uchar *s)
+{
+  if (c < 0x80)
+    {
+      s[0] = c;
+      return 1;
+    }
+  if (c >= 0x80 && c <= 0x7ff)
+    {
+      s[0] = 0xc0 | ((c >> 6) & 0x1f);
+      s[1] = 0x80 | (c & 0x3f);
+      return 2;
+    }
+  if (c >= 0x800 && c <= 0xffff)
+    {
+      s[0] = 0xe0 | ((c >> 12) & 0x0f);
+      s[1] = 0x80 | ((c >>  6) & 0x3f);
+      s[2] = 0x80 | (c & 0x3f);
+      return 3;
+    }
+  if (c >= 0x10000 && c <= 0x1fffff)
+    {
+      s[0] = 0xf0 | ((c >> 18) & 0x07);
+      s[1] = 0x80 | ((c >> 12) & 0x3f);
+      s[2] = 0x80 | ((c >>  6) & 0x3f);
+      s[3] = 0x80 | (c & 0x3f);
+      return 4;
+    }
+  if (c >= 0x200000 && c <= 0x3ffffff)
+    {
+      s[0] = 0xf8 | ((c >> 24) & 0x03);
+      s[1] = 0x80 | ((c >> 18) & 0x3f);
+      s[2] = 0x80 | ((c >> 12) & 0x3f);
+      s[3] = 0x80 | ((c >>  6) & 0x3f);
+      s[4] = 0x80 | (c & 0x3f);
+      return 5;
+    }
+  if (c >= 0x4000000 && c <= 0x7fffffff)
+    {
+      s[0] = 0xfc | ((c >> 30) & 0x01);
+      s[1] = 0x80 | ((c >> 24) & 0x3f);
+      s[2] = 0x80 | ((c >> 18) & 0x3f);
+      s[3] = 0x80 | ((c >> 12) & 0x3f);
+      s[4] = 0x80 | ((c >>  6) & 0x3f);
+      s[5] = 0x80 | (c & 0x3f);
+      return 6;
+    }
+  /* Error */
+  s[0] = c;
+  return 1;
+}
+
+/*
+ * Adjust line positions in wp->w_ring to account for an insertion of nchars characters
+ * at position *oldpos, where newlp is the line that replaced oldpos.p.
+ */
+static void
+adjustforinsert (const POS *oldpos, LINE *newlp, int nchars, WINDOW *wp)
+{
+  int i;
+
+  for (i = 0; i < wp->w_ring.m_count; i++)
+    {
+      POS *pos = &wp->w_ring.m_ring[i];
+
+      if (pos->p == oldpos->p)
+	{
+	  pos->p = newlp;
+	  if (pos->o > oldpos->o)
+	    pos->o += nchars;
+	}
+    }
+}
+
+/*
+ * Return number of UTF-8 characters in the string s of length n.
+ */
+int
+unslen (const uchar *s, int n)
+{
+  int len = 0;
+  const uchar *end = s + n;
+
+  while (s < end)
+    {
+      s += uclen (s);
+      len++;
+    }
+  return len;
+}
+
+/*
+ * Return the byte offset of the nth UTF-8 character in the string s.
+ */
+int
+uoffset (const uchar *s, int n)
+{
+  const uchar *start = s;
+  while (n > 0)
+    {
+       s += uclen (s);
+      --n;
+    }
+  return s - start;
+}
+
+
+/*
  * Insert a character to the kill buffer, enlarging the buffer if there isn't
  * any room. Always grow the buffer in chunks, on the assumption that if you
  * put something in the kill buffer you are going to put more stuff there too

@@ -333,3 +333,16 @@ checkreadonly (void)
   else
     return TRUE;
 }
+
+/*
+ * Update the mode lines for all windows viewing the current buffer.
+ */
+void
+updatemode (void)
+{
+  WINDOW *wp;
+
+  ALLWIND (wp)			/* Update mode lines.   */
+    if (wp->w_bufp == curbp)
+      wp->w_flag |= WFMODE;
+}
