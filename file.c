@@ -317,3 +317,19 @@ int writeout (char *fn)
     return (FALSE);
   return (TRUE);
 }
+
+/*
+ * Check whether the current buffer is read-only.  It if is,
+ * display an error message and return FALSE; otherwise return TRUE.
+ */
+int
+checkreadonly (void)
+{
+  if ((curbp->b_flag & BFRO) != 0)
+    {
+      mlwrite ("Buffer is read-only");
+      return FALSE;
+    }
+  else
+    return TRUE;
+}

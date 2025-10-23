@@ -85,3 +85,5 @@ typedef enum UKIND
 } UKIND;
 
 #define	ALLWIND(wp)	for (wp=wheadp;wp;wp=wp->w_wndp)
+
+int checkreadonly (void);
