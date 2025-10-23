@@ -106,6 +106,7 @@ typedef struct WINDOW
   char w_force;			/* If NZ, forcing row */
   char w_flag;			/* Flags */
   struct POS w_dot;		/* The "." (dot) position	*/
+  struct LINE *w_savep;		/* save line pointer for search */
 } WINDOW;
 
 #define WFFORCE 0x01         /* Window needs forced reframe */

@@ -16,6 +16,7 @@
 #include "estruct.h"
 #include "edef.h"
 #include <string.h>
+#include <stdio.h>
 
 extern void mlwrite ();
 extern int backchar (int f, int n);
@@ -23,7 +24,7 @@ extern int backchar (int f, int n);
 LINE* lalloc (int used);
 void lfree (LINE *lp);
 void lchange (int flag);
-int linsert (int n, int c);
+int linsert(int n, int c, char *s);
 int lnewline ();
 int ldelete (int n, int kflag);
 int ldelnewline ();
@@ -141,94 +142,6 @@ void lchange (int flag)
     }
 }
 
-/*
- * Insert "n" copies of the character "c" at the current location of dot. In
- * the easy case all that happens is the text is stored in the line. In the
- * hard case, the line has to be reallocated. When the window list is updated,
- * take special care; I screwed it up once. You always update dot in the
- * current window. You update mark, and a dot in another window, if it is
- * greater than the place where you did the insert. Return TRUE if all is
- * well, and FALSE on errors
- */
-int linsert (int n, int c)
-{
-  WINDOW *wp;
-  LINE *lp1, *lp2, *lp3;
-  char *cp1, *cp2;
-  int i, doto;
-
-  lchange (WFEDIT);
-  lp1 = curwp->w_dotp;	       /* Current line */
-  if (lp1 == curbp->b_linep)
-    {			       /* At the end: special */
-      if (curwp->w_doto != 0)
-	{
-	  mlwrite ("bug: linsert");
-	  return (FALSE);
-	}
-      if ((lp2 = lalloc (n)) == NULL)	/* Allocate new line */
-	return (FALSE);
-      lp3 = lp1->l_bp;	       /* Previous line */
-      lp3->l_fp = lp2;	       /* Link in */
-      lp2->l_fp = lp1;
-      lp1->l_bp = lp2;
-      lp2->l_bp = lp3;
-      for (i = 0; i < n; ++i)
-	lp2->l_text[i] = c;
-      curwp->w_dotp = lp2;
-      curwp->w_doto = n;
-      return (TRUE);
-    }
-  doto = curwp->w_doto;	       /* Save for later */
-  if (lp1->l_used + n > lp1->l_size)
-    {			       /* Hard: reallocate */
-      if ((lp2 = lalloc (lp1->l_used + n)) == NULL)
-	return (FALSE);
-      cp1 = &lp1->l_text[0];
-      cp2 = &lp2->l_text[0];
-      while (cp1 != &lp1->l_text[doto])
-	*cp2++ = *cp1++;
-      cp2 += n;
-      while (cp1 != &lp1->l_text[lp1->l_used])
-	*cp2++ = *cp1++;
-      lp1->l_bp->l_fp = lp2;
-      lp2->l_fp = lp1->l_fp;
-      lp1->l_fp->l_bp = lp2;
-      lp2->l_bp = lp1->l_bp;
-      free ((char *) lp1);
-    }
-  else
-    {				/* Easy: in place */
-      lp2 = lp1;		/* Pretend new line */
-      lp2->l_used += n;
-      cp2 = &lp1->l_text[lp1->l_used];
-      cp1 = cp2 - n;
-      while (cp1 != &lp1->l_text[doto])
-	*--cp2 = *--cp1;
-    }
-  for (i = 0; i < n; ++i)	/* Add the characters */
-    lp2->l_text[doto + i] = c;
-  wp = wheadp;		       /* Update windows */
-  while (wp != NULL)
-    {
-      if (wp->w_linep == lp1)
-	wp->w_linep = lp2;
-      if (wp->w_dotp == lp1)
-	{
-	  wp->w_dotp = lp2;
-	  if (wp == curwp || wp->w_doto > doto)
-	    wp->w_doto += n;
-	}
-      if (wp->w_markp == lp1)
-	{
-	  wp->w_markp = lp2;
-	  if (wp->w_marko > doto)
-	    wp->w_marko += n;
-	}
-      wp = wp->w_wndp;
-    }
-  return (TRUE);
-}
 
 /*
  * Insert a newline into the buffer at the current location of dot in the
@@ -501,6 +414,124 @@ int kremove (int n)
   else
     return (kbufp[n] & 0xFF);
 }
+
+/*
+ * If the string pointer "s" is NULL,
+ * insert "n" copies of the Uncode character "c", converted to UTF-8
+ * at the current location of dot.  Otherwise,
+ * insert "n" bytes from the UTF-8 string "s" at the current
+ * location of dot.  In the easy case,
+ * all that happens is the text is stored in the line.
+ * In the hard case, the line has to be reallocated.
+ * When the window list is updated, take special
+ * care; I screwed it up once. You always update dot
+ * in the current window. You update mark, and a
+ * dot in another window, if it is greater than
+ * the place where you did the insert. Return TRUE
+ * if all is well, and FALSE on errors.
+ */
+int
+linsert(int n, int c, char *s)
+{
+  WINDOW *wp;
+  LINE *lp2;
+  LINE *lp3;
+  POS dot;
+  int chars, bytes, offset, buflen;
+  char buf[6];
+
+  if (checkreadonly () == FALSE)
+    return FALSE;
+  lchange (WFEDIT);
+  dot = curwp->w_dot;		/* Save current line.	*/
+
+  /* Get byte offset of insertion point. */
+  offset = wloffset (dot.p, dot.o);
+
+  if (s != NULL)
+    {
+      /* Set chars to number of characters in UTF-8 string.
+       * Set bytes to number of bytes in the string.
+       */
+      chars = unslen ((uchar *)s, n);
+      bytes = n;
+      saveundo (UINSERT, NULL, 1, chars, bytes, s);
+    }
+ else
+    {
+      /* Convert character to UTF-8, store in buf. Set chars to
+       * total number of characters to insert.  Set bytes to total number
+       * of bytes to insert.
+       */
+      buflen = uputc (c, (uchar *)buf);
+      chars = n;
+      bytes = n * buflen;
+      saveundo (UINSERT, NULL, n, 1, buflen, buf);
+    }
+
+  if (dot.p == curbp->b_linep)
+    {				/* At the end: special  */
+      if (offset != 0)
+	{
+	  eprintf ("bug: linsert");
+	  return (FALSE);
+	}
+      if ((lp2 = lalloc (bytes)) == NULL)	/* Allocate new line    */
+	return (FALSE);
+      lp3 = dot.p->l_bp;		/* Previous line        */
+      lp3->l_fp = lp2;			/* Link in              */
+      lp2->l_fp = dot.p;
+      dot.p->l_bp = lp2;
+      lp2->l_bp = lp3;
+    }
+  else if (dot.p->l_used + bytes > dot.p->l_size)
+    {					/* Hard: reallocate     */
+      if ((lp2 = lalloc (dot.p->l_used + bytes)) == NULL)
+	return (FALSE);
+      memcpy (&lp2->l_text[0], &dot.p->l_text[0], offset);
+      memcpy (&lp2->l_text[offset + bytes], &dot.p->l_text[offset],
+	      dot.p->l_used - offset);	/* make room            */
+      dot.p->l_bp->l_fp = lp2;
+      lp2->l_fp = dot.p->l_fp;
+      dot.p->l_fp->l_bp = lp2;
+      lp2->l_bp = dot.p->l_bp;
+      free ((char *) dot.p);
+    }
+  else
+    {				/* Easy: in place       */
+      lp2 = dot.p;		/* Pretend new line     */
+      memmove (&dot.p->l_text[offset + bytes], &dot.p->l_text[offset],
+	       dot.p->l_used - offset);	/* make room            */
+      lp2->l_used += bytes;		/* bump length up       */
+    }
+
+  if (s == NULL)		/* fill or copy?        */
+    {
+      int i, o;
+
+      for (i = 0, o = offset; i < chars; i++, o += buflen)
+	memcpy (&lp2->l_text[o], buf, buflen);	/* fill the characters  */
+    }
+  else
+    memcpy (&lp2->l_text[offset], s, bytes);	/* copy the characters  */
+
+  ALLWIND (wp)
+  {				/* Update windows       */
+    if (wp->w_linep == dot.p)
+      wp->w_linep = lp2;
+    if (wp->w_savep == dot.p)
+      wp->w_savep = lp2;
+    if (wp->w_dot.p == dot.p)
+      {
+	wp->w_dot.p = lp2;
+	if (wp == curwp || wp->w_dot.o > dot.o)
+	  wp->w_dot.o += chars;
+      }
+    adjustforinsert (&dot, lp2, chars, wp);
+  }
+  return (TRUE);
+}
+
 
 /*
  * Insert the string s containing len bytes,

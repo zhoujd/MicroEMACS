@@ -69,3 +69,19 @@ extern short *kbdmop;		/* Output pointer for above */
 #ifndef	termdef
 extern TERM term;		/* Terminal information */
 #endif
+
+typedef unsigned char uchar;
+#define eprintf printf
+
+/*
+ * Kinds of undo information.
+ */
+typedef enum UKIND
+{
+  UUNUSED = 0,			/* Entry is unused		*/
+  UMOVE,			/* Move to (line #, offset)	*/
+  UINSERT,			/* Insert string		*/
+  UDELETE,			/* Delete string		*/
+} UKIND;
+
+#define	ALLWIND(wp)	for (wp=wheadp;wp;wp=wp->w_wndp)
