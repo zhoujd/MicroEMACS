@@ -1,0 +1,157 @@
+;	.emacsrc -- Startup file for µEMACS 4.2
+;
+;	This file is executed every time the editor is entered.
+
+set $discmd FALSE
+!if &not &seq $progname µEMACS
+; uemacs/PK and MicroEMACS
+	set $discmd TRUE
+	!return
+!endif
+
+set $tab 4
+# set $viewtab TRUE	# uncomment this line if you need to visualize tabs
+set $fillcol 76
+
+
+##	Help facility
+!if &seq $TERM cygwin
+	set $scroll FALSE
+	set %F1		FNP		#currently not readable
+	set %Home	FN1
+	set %End	FN4
+!else
+	set %F1		FNP
+	set %Home	FNH
+	set %End	FNF
+!endif
+
+!store 40
+	set $discmd FALSE
+	!if &not &seq $cbufname "emacs.hlp"
+		write-message "(Loading Help)"
+		!force help
+		!if &not &seq $cbufname "emacs.hlp"
+			write-message "(Failed to load Help)"
+		!else
+			!force 8 resize-window
+			bind-to-key execute-macro-39 FN5
+			bind-to-key execute-macro-38 FN6
+			bind-to-key execute-macro-37 %Home
+			bind-to-key execute-macro-36 %End
+			beginning-of-line
+			2 forward-character
+			1 redraw-display
+			set %hlpupdn "[PgUp] / [PgDn]"
+			set %hlphelp "[F1]"
+			run helponhelp
+		!endif
+	!else
+		set %hlpcode &lef $line 2 
+		!if &seq %hlpcode ".."
+			set %hlptopic &mid $line 4 99
+			end-of-line
+			!force search-forward %hlptopic
+			beginning-of-line
+			2 forward-character
+			1 redraw-display
+			run helponhelp
+		!else
+			!force search-reverse "=>"
+			bind-to-key previous-page FN5
+			bind-to-key next-page FN6
+			bind-to-key beginning-of-file %Home
+			bind-to-key end-of-file %End
+			!force delete-window
+			clear-message-line
+		!endif
+	!endif
+	set $discmd TRUE
+!endm
+
+bind-to-key execute-macro-40 M-?
+bind-to-key execute-macro-40 %F1
+bind-to-key execute-macro-40 M-O
+bind-to-key beginning-of-file %Home
+bind-to-key end-of-file %End
+
+
+##	Help on Help
+!store helponhelp
+	!if &seq &rig $line 5 "INDEX"
+		write-message &cat "Select topic from list and press " %hlphelp
+	!else
+		write-message &cat "Use " &cat %hlpupdn &cat " to scan help file -- " &cat %hlphelp " to toggle help window"
+	!endif
+!endm
+
+
+##	Previous help page
+!store 39
+	!if &seq $cbufname "emacs.hlp"
+		beginning-of-line
+		!force search-reverse "=>"
+		2 forward-character
+		1 redraw-display
+		run helponhelp
+	!else
+		previous-page
+	!endif
+!endm
+
+
+##	Next help page
+!store 38
+	!if &seq $cbufname "emacs.hlp"
+		beginning-of-line
+		2 forward-character
+		!force search-forward "=>"
+		1 redraw-display
+		run helponhelp
+	!else
+		next-page
+	!endif
+!endm
+
+!store 37
+	beginning-of-file
+	!if &seq $cbufname "emacs.hlp"
+		execute-macro-39
+	!endif
+!endm
+
+!store 36
+	end-of-file
+	!if &seq $cbufname "emacs.hlp"
+		execute-macro-39
+	!endif
+!endm
+
+
+##	Set up auto CMODE or WRAP
+!store 35
+	set %rctmp &right $cfname 4
+	!if &or &seq .txt %rctmp &seq .doc %rctmp
+		add-mode wrap
+		!return
+	!endif
+	set %rctmp &right %rctmp 2
+	!if &or &seq .c %rctmp &seq .h %rctmp
+		add-mode cmode
+		!return
+	!endif
+!endm
+	
+bind-to-key execute-macro-35	M-FNR
+
+
+##	Make cut-paste easier in window systems
+bind-to-key	newline	^J
+
+
+!if &or &sin $LANG "UTF-8" &sin $LANG "utf8"
+	add-global-mode "utf-8"
+!endif
+
+write-message "[F1] for help index"
+set $discmd TRUE
