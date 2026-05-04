@@ -1,0 +1,49 @@
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Borland C++ 5.5 files
+*.cfg
+*.map
+*.res
+/mswin/bcpp55/bin
+/mswin/bcpp55/obj
+/nt/bcpp55/bin
+/nt/bcpp55/obj
+/xp/bcpp55/bin
+/xp/bcpp55/obj
+
+# Visual Studio Code files
+.vscode
+
+# Visual Studio 2017 Files
+*.aps
+*.user
+/.vs
+/mswin/vs2017/.vs
+/mswin/vs2017/Debug
+/mswin/vs2017/Release
+/mswin/vs2017/x64
+/xp/vs2017/.vs
+/xp/vs2017/Debug
+/xp/vs2017/Release
+/xp/vs2017/x64
+
+# Help Temporary Files
+*.chw
+*.gid
+
+# Mac OS Files
+.DS_Store
+
+# Microsoft C Files
+/mswin/msc/bin
+/mswin/msc/obj.c6
+/mswin/msc/obj.c7
+
+# Microsoft MASM Files
+# The *.lst type is also used for other purposes.
+#*.lst
+*.sbr
